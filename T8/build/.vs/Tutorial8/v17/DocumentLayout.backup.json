@@ -3,19 +3,37 @@
   "WorkspaceRootPath": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\build\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,72 +43,141 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "shaderGouraud.vert",
-              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert",
-              "RelativeDocumentMoniker": "..\\resource\\shaderGouraud.vert",
-              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert",
-              "RelativeToolTip": "..\\resource\\shaderGouraud.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-31T02:12:39.506Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "shaderGouraud.frag",
-              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag",
-              "RelativeDocumentMoniker": "..\\resource\\shaderGouraud.frag",
-              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag",
-              "RelativeToolTip": "..\\resource\\shaderGouraud.frag",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-31T01:03:47.634Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "fetchInput.cpp",
-              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp",
-              "RelativeDocumentMoniker": "..\\src\\fetchInput.cpp",
-              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp",
-              "RelativeToolTip": "..\\src\\fetchInput.cpp",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABYAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-31T01:34:27.87Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "camera.cpp",
               "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp",
               "RelativeDocumentMoniker": "..\\src\\camera.cpp",
               "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp",
               "RelativeToolTip": "..\\src\\camera.cpp",
-              "ViewState": "AgIAADAAAAAAAAAAAAAcwEIAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAcwGEAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-31T01:34:24.165Z",
+              "WhenOpened": "2026-03-31T18:37:22.049Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "sun.vert",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.vert",
+              "RelativeDocumentMoniker": "..\\resource\\sun.vert",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.vert",
+              "RelativeToolTip": "..\\resource\\sun.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T17:34:08.568Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CMakeLists.txt",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\CMakeLists.txt",
+              "RelativeDocumentMoniker": "..\\CMakeLists.txt",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\CMakeLists.txt",
+              "RelativeToolTip": "..\\CMakeLists.txt",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACQAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-03-31T16:39:21.117Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "skybox.frag",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.frag",
+              "RelativeDocumentMoniker": "..\\resource\\skybox.frag",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.frag",
+              "RelativeToolTip": "..\\resource\\skybox.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T16:39:07.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "skybox.vert",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.vert",
+              "RelativeDocumentMoniker": "..\\resource\\skybox.vert",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\skybox.vert",
+              "RelativeToolTip": "..\\resource\\skybox.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T16:39:06.387Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "waterShader.vert",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.vert",
+              "RelativeDocumentMoniker": "..\\resource\\waterShader.vert",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.vert",
+              "RelativeToolTip": "..\\resource\\waterShader.vert",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAqwCcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T16:00:08.216Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "waterShader.frag",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.frag",
+              "RelativeDocumentMoniker": "..\\resource\\waterShader.frag",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\waterShader.frag",
+              "RelativeToolTip": "..\\resource\\waterShader.frag",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T16:00:39.048Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "shaderPhong.vert",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.vert",
+              "RelativeDocumentMoniker": "..\\resource\\shaderPhong.vert",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.vert",
+              "RelativeToolTip": "..\\resource\\shaderPhong.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T02:12:39.506Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "shaderPhong.frag",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.frag",
+              "RelativeDocumentMoniker": "..\\resource\\shaderPhong.frag",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderPhong.frag",
+              "RelativeToolTip": "..\\resource\\shaderPhong.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T01:03:47.634Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "main.cpp",
               "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp",
               "RelativeDocumentMoniker": "..\\main.cpp",
               "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp",
               "RelativeToolTip": "..\\main.cpp",
-              "ViewState": "AgIAAJkBAAAAAAAAAAAAANcBAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAGECAAAAAAAAAAAswNgCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-03-31T01:33:45.471Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "sun.frag",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.frag",
+              "RelativeDocumentMoniker": "..\\resource\\sun.frag",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\sun.frag",
+              "RelativeToolTip": "..\\resource\\sun.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-31T17:34:09.342Z"
             }
           ]
         }

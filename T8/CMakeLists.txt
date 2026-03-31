@@ -29,12 +29,15 @@ set(HDRS
 
 # Shader/resource files (optional in build, but useful for IDE organization)
 set(RESOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/colorShader.vert
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/colorShader.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shaderGouraud.vert
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shaderGouraud.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/textureShader.vert
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/textureShader.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shaderPhong.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shaderPhong.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/waterShader.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/waterShader.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/skybox.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/skybox.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/sun.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/sun.vert
+
 )
 
 add_executable(${PROJECT_NAME}

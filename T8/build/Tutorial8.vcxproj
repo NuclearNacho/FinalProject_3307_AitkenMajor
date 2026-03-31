@@ -361,17 +361,21 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\src\fetchInput.cpp" />
     <ClInclude Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\include\camera.h" />
     <ClInclude Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\include\fetchInput.h" />
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\colorShader.vert">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderPhong.vert">
     </None>
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\colorShader.frag">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderPhong.frag">
     </None>
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderGouraud.vert">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\waterShader.vert">
     </None>
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderGouraud.frag">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\waterShader.frag">
     </None>
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\textureShader.vert">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\skybox.vert">
     </None>
-    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\textureShader.frag">
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\skybox.frag">
+    </None>
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\sun.frag">
+    </None>
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\sun.vert">
     </None>
   </ItemGroup>
   <ItemGroup />
