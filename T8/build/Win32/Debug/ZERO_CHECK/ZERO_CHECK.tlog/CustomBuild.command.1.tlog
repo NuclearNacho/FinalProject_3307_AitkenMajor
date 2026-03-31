@@ -1,0 +1,10 @@
+^C:\USERS\NMAJO\DOWNLOADS\FINALPROJECT_3307_AITKENMAJOR-MASTER\FINALPROJECT_3307_AITKENMAJOR-MASTER\T8\BUILD\CMAKEFILES\713C665F87B4B1A1F77CAE161F1B11DA\GENERATE.STAMP.RULE
+setlocal
+C:\Users\nmajo\Downloads\cmake-4.1.1-windows-x86_64\cmake-4.1.1-windows-x86_64\bin\cmake.exe -SC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8 -BC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build/Tutorial8.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
