@@ -1,18 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\build\\",
+  "WorkspaceRootPath": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\build\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F4F7B835-1BF5-3898-B0F3-4EB53CC0F96D}|Tutorial8.vcxproj|C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4F7B835-1BF5-3898-B0F3-4EB53CC0F96D}|Tutorial8.vcxproj|C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4F7B835-1BF5-3898-B0F3-4EB53CC0F96D}|Tutorial8.vcxproj|C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\colorShader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F4F7B835-1BF5-3898-B0F3-4EB53CC0F96D}|Tutorial8.vcxproj|C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{451754D9-6DDE-3A88-B643-A202C5586110}|Tutorial8.vcxproj|C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,58 +25,71 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "colorShader.vert",
-              "DocumentMoniker": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\colorShader.vert",
-              "RelativeDocumentMoniker": "..\\resource\\colorShader.vert",
-              "ToolTip": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\colorShader.vert",
-              "RelativeToolTip": "..\\resource\\colorShader.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "shaderGouraud.vert",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert",
+              "RelativeDocumentMoniker": "..\\resource\\shaderGouraud.vert",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.vert",
+              "RelativeToolTip": "..\\resource\\shaderGouraud.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-27T17:50:28.075Z",
+              "WhenOpened": "2026-03-31T02:12:39.506Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "shaderGouraud.frag",
-              "DocumentMoniker": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.frag",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag",
               "RelativeDocumentMoniker": "..\\resource\\shaderGouraud.frag",
-              "ToolTip": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.frag",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\resource\\shaderGouraud.frag",
               "RelativeToolTip": "..\\resource\\shaderGouraud.frag",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAswEAAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-27T17:49:08.649Z",
+              "WhenOpened": "2026-03-31T01:03:47.634Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "shaderGouraud.vert",
-              "DocumentMoniker": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.vert",
-              "RelativeDocumentMoniker": "..\\resource\\shaderGouraud.vert",
-              "ToolTip": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\resource\\shaderGouraud.vert",
-              "RelativeToolTip": "..\\resource\\shaderGouraud.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-03-27T17:48:11.851Z",
+              "DocumentIndex": 2,
+              "Title": "fetchInput.cpp",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp",
+              "RelativeDocumentMoniker": "..\\src\\fetchInput.cpp",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\fetchInput.cpp",
+              "RelativeToolTip": "..\\src\\fetchInput.cpp",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABYAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-03-31T01:34:27.87Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\main.cpp",
-              "RelativeDocumentMoniker": "..\\main.cpp",
-              "ToolTip": "C:\\Users\\nmajo\\Downloads\\FinalProject_3307_AitkenMajor-master\\FinalProject_3307_AitkenMajor-master\\T8\\main.cpp",
-              "RelativeToolTip": "..\\main.cpp",
-              "ViewState": "AgIAAEYBAAAAAAAAAAAswKsBAAAYAAAAAAAAAA==",
+              "Title": "camera.cpp",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp",
+              "RelativeDocumentMoniker": "..\\src\\camera.cpp",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\src\\camera.cpp",
+              "RelativeToolTip": "..\\src\\camera.cpp",
+              "ViewState": "AgIAADAAAAAAAAAAAAAcwEIAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-26T23:02:08.121Z",
+              "WhenOpened": "2026-03-31T01:34:24.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp",
+              "RelativeDocumentMoniker": "..\\main.cpp",
+              "ToolTip": "C:\\Users\\ethan\\OneDrive\\University Work\\Computer Science\\3D Computer Graphics\\Project\\FinalProject_3307_AitkenMajor\\T8\\main.cpp",
+              "RelativeToolTip": "..\\main.cpp",
+              "ViewState": "AgIAAJkBAAAAAAAAAAAAANcBAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-03-31T01:33:45.471Z",
               "EditorCaption": ""
             }
           ]

@@ -39,7 +39,10 @@ int Camera::Pitch(float angleDeg) {
 }
 
 int Camera::Yaw(float angleDeg) {
-	glm::quat rotation = glm::angleAxis(glm::radians(angleDeg), GetUp());
+	// Rotate around the WORLD up axis (Z-axis) to get pure left/right look
+	// without any roll contamination
+	glm::vec3 worldUp = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::quat rotation = glm::angleAxis(glm::radians(angleDeg), worldUp);
 	orientation_ *= rotation;
 	orientation_ = glm::normalize(orientation_);
 
@@ -61,7 +64,8 @@ glm::vec3 Camera::MoveBackward(float numUnits) {
 }
 
 glm::vec3 Camera::MoveUp(float numUnits) {
-	position += numUnits * GetUp();
+	// Move along the WORLD up axis (Z), not the camera's local up
+	position += numUnits * glm::vec3(0.0f, 0.0f, 1.0f);
 
 	//DO NOT remove the line below:
 	viewMat = glm::lookAt(position, position + forwardVector, upVector);

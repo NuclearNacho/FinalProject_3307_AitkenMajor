@@ -1,6 +1,6 @@
-^C:\USERS\NMAJO\DOWNLOADS\FINALPROJECT_3307_AITKENMAJOR-MASTER\FINALPROJECT_3307_AITKENMAJOR-MASTER\T8\CMAKELISTS.TXT
+^C:\USERS\ETHAN\ONEDRIVE\UNIVERSITY WORK\COMPUTER SCIENCE\3D COMPUTER GRAPHICS\PROJECT\FINALPROJECT_3307_AITKENMAJOR\T8\CMAKELISTS.TXT
 setlocal
-C:\Users\nmajo\Downloads\cmake-4.1.1-windows-x86_64\cmake-4.1.1-windows-x86_64\bin\cmake.exe -SC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8 -BC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build --check-stamp-file C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8" "-BC:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/build" --check-stamp-file "C:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/build/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

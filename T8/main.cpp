@@ -11,13 +11,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <camera.h>
+#include "fetchInput.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <cmath>
 
 // Path to shader directory
-#define DIRECTORY "C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/"
+#define DIRECTORY "C:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/"
 
 // Macro for printing exceptions
 #define PrintException(exception_object)\
@@ -301,13 +302,6 @@ GLuint CreateWaterPlaneVAO(float width, float height, float zHeight, GLuint& out
 }
 
 
-// Keyboard callback
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, true);
-	}
-}
-
 // Window resize callback
 void ResizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -323,111 +317,155 @@ void PrintOpenGLInfo() {
 	std::cout << "OpenGL Shading Language Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
+//-----------------------------------------------------------
+// Generate deterministic terrain heightmap
+// Uses layered sine/cosine functions with radial inversion
+// to create a central basin surrounded by hilly terrain
+//-----------------------------------------------------------
+void GenerateTerrainHeights(
+	int rows, int cols,
+	std::vector<float>& heights)
+{
+	heights.resize(rows * cols);
+
+	// Deterministic height generation parameters
+	const float maxPeak = 14.0f;    // deeper trench
+	const float falloff = 2.0f;     // slower falloff = hills extend further out
+	const float ridgeAmp = 7.0f;    // much more pronounced ridges
+	const float freqX = 5.0f;       // higher frequency = more bumps
+	const float freqY = 11.0f;
+
+	// Radial inversion setup
+	const float maxRadius = std::sqrt(2.0f);
+
+	for (int r = 0; r < rows; ++r) {
+		float v = (rows == 1) ? 0.5f : (float)r / (float)(rows - 1);
+		float yNorm = v * 2.0f - 1.0f;
+
+		for (int c = 0; c < cols; ++c) {
+			float u = (cols == 1) ? 0.5f : (float)c / (float)(cols - 1);
+			float xNorm = u * 2.0f - 1.0f;
+
+			// original deterministic height
+			float radial = std::exp(-((xNorm * xNorm + yNorm * yNorm) * falloff));
+			float base = maxPeak * radial;
+			float ridges = ridgeAmp * std::sin(xNorm * freqX) * std::cos(yNorm * freqY) * (0.4f + 0.6f * radial);
+			float waves = 1.5f * (std::sin(xNorm * 3.0f) + std::cos(yNorm * 2.5f)) * (1.0f - 0.6f * radial);
+
+			// Extra bumpy layers for more severe terrain variation
+			float bumps1 = 1.6f * std::sin(xNorm * 15.0f + yNorm * 7.0f) * (0.3f + 0.7f * radial);
+			// float bumps2 = 0.0f * std::cos(xNorm * 5.0f - yNorm * 13.0f) * (0.5f + 0.5f * radial);
+			// float bumps3 = 0.0f * std::sin((xNorm + yNorm) * 20.0f);  // high-freq detail everywhere
+
+			float h_orig = base + ridges + waves + bumps1; // + bumps2 + bumps3;
+
+			// normalized radial distance from center
+			float rDist = std::sqrt(xNorm * xNorm + yNorm * yNorm);
+			float rNorm = rDist / maxRadius;
+			if (rNorm < 0.0f) rNorm = 0.0f;
+			if (rNorm > 1.0f) rNorm = 1.0f;
+
+			// invert in center, keep edge mostly unchanged
+			float factor = 2.0f * rNorm - 1.0f;
+			float h = h_orig * factor;
+
+			heights[r * cols + c] = h;
+		}
+	}
+}
+
+//-----------------------------------------------------------
+// Initialize GLFW window, GLEW, and OpenGL state
+// Creates the application window and sets up the GL context
+//-----------------------------------------------------------
+void InitWindow() {
+	if (!glfwInit()) {
+		throw(std::runtime_error("Could not initialize the GLFW library"));
+	}
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+	window = glfwCreateWindow(window_width_g, window_height_g, window_title_g.c_str(), NULL, NULL);
+	if (!window) {
+		glfwTerminate();
+		throw(std::runtime_error("Could not create window"));
+	}
+
+	glfwMakeContextCurrent(window);
+
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (err != GLEW_OK) {
+		throw(std::runtime_error(std::string("Could not initialize GLEW: ") + (const char*)glewGetErrorString(err)));
+	}
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+}
+
+//-----------------------------------------------------------
+// Initialize camera position, orientation and perspective
+// Places camera high enough to see the full terrain
+//-----------------------------------------------------------
+void InitCamera() {
+	camera = new Camera();
+	camera->SetCamera(glm::vec3(0.0f, -80.0f, 40.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+	camera->SetPerspectiveView(camera_fov_g, (float)window_width_g / (float)window_height_g, camera_near_clip_distance_g, camera_far_clip_distance_g);
+
+	glViewport(0, 0, window_width_g, window_height_g);
+	projection_matrix = camera->GetProjectionMatrix(NULL);
+}
+
+//-----------------------------------------------------------
+// Set common shader uniforms for a given frame
+// Uploads model/view/projection matrices and sun direction
+//-----------------------------------------------------------
+void SetFrameUniforms(GLuint shader, const glm::mat4& model, float current_time) {
+	// model / view / projection (legacy names)
+	GLint locModel = glGetUniformLocation(shader, "model");
+	if (locModel != -1) glUniformMatrix4fv(locModel, 1, GL_FALSE, glm::value_ptr(model));
+	GLint locView = glGetUniformLocation(shader, "view");
+	if (locView != -1) glUniformMatrix4fv(locView, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	GLint locProj = glGetUniformLocation(shader, "projection");
+	if (locProj != -1) glUniformMatrix4fv(locProj, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+
+	// model / view / projection (textureShader names)
+	GLint locWorld = glGetUniformLocation(shader, "world_mat");
+	if (locWorld != -1) glUniformMatrix4fv(locWorld, 1, GL_FALSE, glm::value_ptr(model));
+	GLint locViewMat = glGetUniformLocation(shader, "view_mat");
+	if (locViewMat != -1) glUniformMatrix4fv(locViewMat, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	GLint locProjMat = glGetUniformLocation(shader, "projection_mat");
+	if (locProjMat != -1) glUniformMatrix4fv(locProjMat, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+
+	// Sun directional light — revolves around the scene like a day/night cycle
+	float sunSpeed = 0.5f;
+	float sunAngle = current_time * sunSpeed;
+
+	glm::vec3 sunDirWorld = glm::normalize(glm::vec3(
+		std::cos(sunAngle),
+		0.3f,
+		std::abs(std::sin(sunAngle))
+	));
+
+	glm::vec3 sunDirView = glm::vec3(view_matrix * glm::vec4(sunDirWorld, 0.0f));
+	GLint locSunDir = glGetUniformLocation(shader, "sunDirection");
+	if (locSunDir != -1) glUniform3fv(locSunDir, 1, glm::value_ptr(sunDirView));
+}
+
+
 // Main function
 int main(void) {
 	try {
-		if (!glfwInit()) {
-			throw(std::runtime_error("Could not initialize the GLFW library"));
-		}
-
-#ifdef __APPLE__
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-		window = glfwCreateWindow(window_width_g, window_height_g, window_title_g.c_str(), NULL, NULL);
-		if (!window) {
-			glfwTerminate();
-			throw(std::runtime_error("Could not create window"));
-		}
-
-		glfwMakeContextCurrent(window);
-
-		glewExperimental = GL_TRUE;
-		GLenum err = glewInit();
-		if (err != GLEW_OK) {
-			throw(std::runtime_error(std::string("Could not initialize GLEW: ") + (const char*)glewGetErrorString(err)));
-		}
-
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-
-		// Initialize camera: top-down view along +Z, looking at origin. Up is +Y.
-		// Place camera sufficiently high to see the whole large plane (Z is height in the mesh)
-		camera = new Camera();
-		camera->SetCamera(glm::vec3(0.0f, -80.0f, 40.0f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f));
-
-		// Configure the camera's perspective to match the window aspect and clip planes
-		camera->SetPerspectiveView(camera_fov_g, (float)window_width_g / (float)window_height_g, camera_near_clip_distance_g, camera_far_clip_distance_g);
-
-		// Initialize viewport and projection matrix
-		glViewport(0, 0, window_width_g, window_height_g);
-		projection_matrix = camera->GetProjectionMatrix(NULL);
-
-		// Load shaders
-		GLuint myShader = LoadShaders("shaderGouraud");
-
-		// Create a much larger plane with deterministic height map (no randomness)
-		const float planeWidth = 50.0f;
-		const float planeHeight = 50.0f;
-		const int rows = 41;
-		const int cols = 41;
-
-		std::vector<float> heights;
-		heights.resize(rows * cols);
-
-		// Deterministic height generation parameters
-		const float maxPeak = 8.0f;
-		const float falloff = 4.0f;
-		const float ridgeAmp = 2.5f;
-		const float freqX = 6.0f;
-		const float freqY = 9.0f;
-
-		// Radial inversion setup
-		const float maxRadius = std::sqrt(2.0f);
-
-		for (int r = 0; r < rows; ++r) {
-			float v = (rows == 1) ? 0.5f : (float)r / (float)(rows - 1);
-			float yNorm = v * 2.0f - 1.0f;
-
-			for (int c = 0; c < cols; ++c) {
-				float u = (cols == 1) ? 0.5f : (float)c / (float)(cols - 1);
-				float xNorm = u * 2.0f - 1.0f;
-
-				// original deterministic height
-				float radial = std::exp(-((xNorm * xNorm + yNorm * yNorm) * falloff));
-				float base = maxPeak * radial;
-				float ridges = ridgeAmp * std::sin(xNorm * freqX) * std::cos(yNorm * freqY) * (0.4f + 0.6f * radial);
-				float waves = 1.5f * (std::sin(xNorm * 3.0f) + std::cos(yNorm * 2.5f)) * (1.0f - 0.6f * radial);
-				float h_orig = base + ridges + waves;
-
-				// normalized radial distance from center
-				float rDist = std::sqrt(xNorm * xNorm + yNorm * yNorm);
-				float rNorm = rDist / maxRadius;
-				if (rNorm < 0.0f) rNorm = 0.0f;
-				if (rNorm > 1.0f) rNorm = 1.0f;
-
-				// invert in center, keep edge mostly unchanged
-				float factor = 2.0f * rNorm - 1.0f;
-				float h = h_orig * factor;
-
-				heights[r * cols + c] = h;
-			}
-		}
-
-		GLuint planeIndexCount = 0;
-		GLuint planeVAO = CreateBumpyPlaneVAO(planeWidth, planeHeight, rows, cols, heights, planeIndexCount);
-
-		// Create water plane halfway into the pit
-		GLuint waterIndexCount = 0;
-		float waterHeight = -2.5f;; // adjust this value if you want water higher/lower
-		float waterWidth = 25.0f;
-		float waterHeightSize = 25.0f;
-		GLuint waterVAO = CreateWaterPlaneVAO(waterWidth, waterHeightSize, waterHeight, waterIndexCount);
+		InitWindow();
+		InitCamera();
 
 		// Set callbacks
 		glfwSetWindowUserPointer(window, (void*)&projection_matrix);
@@ -436,6 +474,28 @@ int main(void) {
 
 		PrintOpenGLInfo();
 
+		// Load shaders
+		GLuint myShader = LoadShaders("shaderGouraud");
+
+		// Create terrain mesh from deterministic heightmap
+		const float planeWidth = 50.0f;
+		const float planeHeight = 50.0f;
+		const int rows = 81;
+		const int cols = 81;
+
+		std::vector<float> heights;
+		GenerateTerrainHeights(rows, cols, heights);
+
+		GLuint planeIndexCount = 0;
+		GLuint planeVAO = CreateBumpyPlaneVAO(planeWidth, planeHeight, rows, cols, heights, planeIndexCount);
+
+		// Create water plane halfway into the pit
+		GLuint waterIndexCount = 0;
+		float waterHeight = -2.5f;
+		float waterWidth = 30.0f;
+		float waterHeightSize = 30.0f;
+		GLuint waterVAO = CreateWaterPlaneVAO(waterWidth, waterHeightSize, waterHeight, waterIndexCount);
+
 		// Main loop
 		float last_time = glfwGetTime();
 		while (!glfwWindowShouldClose(window)) {
@@ -443,10 +503,11 @@ int main(void) {
 			float delta = current_time - last_time;
 			last_time = current_time;
 
+			ProcessInput(window, camera, delta);
+
 			glClearColor(background.r, background.g, background.b, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			// Update view and projection matrices
 			view_matrix = camera->GetViewMatrix(NULL);
 			projection_matrix = camera->GetProjectionMatrix(NULL);
 
@@ -454,22 +515,7 @@ int main(void) {
 			glUseProgram(myShader);
 
 			glm::mat4 model = glm::mat4(1.0f);
-
-			// old names
-			GLint locModel = glGetUniformLocation(myShader, "model");
-			if (locModel != -1) glUniformMatrix4fv(locModel, 1, GL_FALSE, glm::value_ptr(model));
-			GLint locView = glGetUniformLocation(myShader, "view");
-			if (locView != -1) glUniformMatrix4fv(locView, 1, GL_FALSE, glm::value_ptr(view_matrix));
-			GLint locProj = glGetUniformLocation(myShader, "projection");
-			if (locProj != -1) glUniformMatrix4fv(locProj, 1, GL_FALSE, glm::value_ptr(projection_matrix));
-
-			// textureShader naming
-			GLint locWorld = glGetUniformLocation(myShader, "world_mat");
-			if (locWorld != -1) glUniformMatrix4fv(locWorld, 1, GL_FALSE, glm::value_ptr(model));
-			GLint locViewMat = glGetUniformLocation(myShader, "view_mat");
-			if (locViewMat != -1) glUniformMatrix4fv(locViewMat, 1, GL_FALSE, glm::value_ptr(view_matrix));
-			GLint locProjMat = glGetUniformLocation(myShader, "projection_mat");
-			if (locProjMat != -1) glUniformMatrix4fv(locProjMat, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+			SetFrameUniforms(myShader, model, current_time);
 
 			// Draw terrain
 			GLint locShapeColor = glGetUniformLocation(myShader, "shape_color");
@@ -480,11 +526,8 @@ int main(void) {
 			glBindVertexArray(0);
 
 			// Draw water plane
-			// Slightly offset upward to avoid z-fighting with terrain intersections
 			glm::mat4 waterModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.02f));
-
-			if (locModel != -1) glUniformMatrix4fv(locModel, 1, GL_FALSE, glm::value_ptr(waterModel));
-			if (locWorld != -1) glUniformMatrix4fv(locWorld, 1, GL_FALSE, glm::value_ptr(waterModel));
+			SetFrameUniforms(myShader, waterModel, current_time);
 
 			if (locShapeColor != -1) glUniform3f(locShapeColor, 0.0f, 0.35f, 0.9f);
 

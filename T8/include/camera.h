@@ -1,11 +1,3 @@
-/*
-Description:
-	Contains a camera class
-Copyright (c):
-	2021 Sharjeel Ali <sharjeelali@cmail.carleton.ca>
-	2020 David Mould <mould@scs.carleton.ca>
-	2016 Doran Nussbaum <nussbaum@scs.carleton.ca>
-*/
 #ifndef CAMERA_H_
 #define CAMERA_H_
 

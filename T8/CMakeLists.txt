@@ -18,11 +18,13 @@ set(LIBRARY_PATH "C:/Libraries" CACHE PATH "Path to external libraries")
 set(SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/camera.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/fetchInput.cpp
 )
 
 # Header files (optional in CMake, but useful for IDE organization)
 set(HDRS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/camera.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/fetchInput.h
 )
 
 # Shader/resource files (optional in build, but useful for IDE organization)

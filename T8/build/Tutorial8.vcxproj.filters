@@ -1,35 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\main.cpp">
+    <ClCompile Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\src\camera.cpp">
+    <ClCompile Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\src\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\src\fetchInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\include\camera.h">
+    <ClInclude Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\include\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\include\fetchInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\colorShader.vert" />
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\colorShader.frag" />
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\shaderGouraud.vert" />
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\shaderGouraud.frag" />
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\textureShader.vert" />
-    <None Include="C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\resource\textureShader.frag" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\colorShader.vert" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\colorShader.frag" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderGouraud.vert" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\shaderGouraud.frag" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\textureShader.vert" />
+    <None Include="C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\resource\textureShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{02430465-7A8F-3D8F-A688-39F0D6098456}</UniqueIdentifier>
+      <UniqueIdentifier>{0809A543-1CDD-3DC9-B132-062606BF7E08}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{F5652FEA-2221-3B7A-A668-B018AE6F492D}</UniqueIdentifier>
+      <UniqueIdentifier>{1F68ABEA-F00E-31BE-B8C5-54FE3473A0EA}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

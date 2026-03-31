@@ -1,8 +1,8 @@
 ﻿  main.cpp
-C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\main.cpp(4,9): warning C4005: 'GLEW_STATIC': macro redefinition
-      C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\main.cpp(4,9):
+C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\main.cpp(4,9): warning C4005: 'GLEW_STATIC': macro redefinition
+      C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\main.cpp(4,9):
       'GLEW_STATIC' previously declared on the command line
   
-C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\main.cpp(440,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\main.cpp(442,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Tutorial8.vcxproj -> C:\Users\nmajo\Downloads\FinalProject_3307_AitkenMajor-master\FinalProject_3307_AitkenMajor-master\T8\build\Debug\Tutorial8_d.exe
+C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\main.cpp(500,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\main.cpp(502,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Tutorial8.vcxproj -> C:\Users\ethan\OneDrive\University Work\Computer Science\3D Computer Graphics\Project\FinalProject_3307_AitkenMajor\T8\build\Debug\Tutorial8_d.exe
