@@ -15,7 +15,7 @@
 #include <iostream>
 
 // Path to shader directory
-#define DIRECTORY "C:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/"
+#define DIRECTORY "C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/"
 
 // Macro for printing exceptions
 #define PrintException(exception_object)\
@@ -37,6 +37,15 @@ glm::mat4 view_matrix, projection_matrix;
 
 GLFWwindow* window;
 Camera* camera;
+
+// Lighting toggles
+bool enableAmbient = true;
+bool enableDiffuse = true;
+bool enableSpecular = true;
+
+bool enableWaterAmbient = true;
+bool enableWaterDiffuse = true;
+bool enableWaterSpecular = true;
 
 //-----------------------------------------------------------
 // Scene geometry handles returned from initialization
@@ -131,11 +140,7 @@ GLuint LoadShaders(std::string shaderName) {
 //-----------------------------------------------------------
 // Create terrain mesh with positions, colors, normals AND UVs
 //-----------------------------------------------------------
-GLuint CreateBumpyPlaneVAO(
-	float width, float height,
-	int rows, int cols,
-	const std::vector<float>& heights,
-	GLuint& outIndexCount)
+GLuint CreateBumpyPlaneVAO(float width, float height,int rows, int cols,const std::vector<float>& heights,GLuint& outIndexCount)
 {
 	if ((int)heights.size() != rows * cols)
 		throw std::runtime_error("Heightmap size mismatch");
@@ -163,7 +168,7 @@ GLuint CreateBumpyPlaneVAO(
 
 	//-------------------------------------------------------
 	// Build vertex buffer: position + color + normal + UV
-	// Stride = 11 floats per vertex
+	// 11 floats per vertex (x, y, z, r, g, b, nx, ny, nz, u, v)
 	//-------------------------------------------------------
 	std::vector<GLfloat> vertexData;
 	vertexData.reserve(rows * cols * 11);
@@ -910,6 +915,15 @@ int main(void) {
 			// ---- Draw terrain (opaque) ----
 			glUseProgram(myShader);
 
+			// Lighting toggle implementation for terrain shader
+			GLint locA = glGetUniformLocation(myShader, "coefA");
+			GLint locD = glGetUniformLocation(myShader, "coefD");
+			GLint locS = glGetUniformLocation(myShader, "coefS");
+
+			if (locA != -1) glUniform1f(locA, enableAmbient * 0.15f);
+			if (locD != -1) glUniform1f(locD, enableDiffuse * 2.0f);
+			if (locS != -1) glUniform1f(locS, enableSpecular * 0.6f);
+
 			glm::mat4 model = glm::mat4(1.0f);
 			SetFrameUniforms(myShader, model, current_time);
 
@@ -936,6 +950,15 @@ int main(void) {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			glUseProgram(waterShader);
+
+			// Lighting toggle implementation for water shader
+			GLint locWaterA = glGetUniformLocation(waterShader, "coefA");
+			GLint locWaterD = glGetUniformLocation(waterShader, "coefD");
+			GLint locWaterS = glGetUniformLocation(waterShader, "coefS");
+
+			if (locWaterA != -1) glUniform1f(locWaterA, enableWaterAmbient * 0.15f);
+			if (locWaterD != -1) glUniform1f(locWaterD, enableWaterDiffuse * 2.0f);
+			if (locWaterS != -1) glUniform1f(locWaterS, enableWaterSpecular * 50.0f);
 
 			glm::mat4 waterModel = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.02f));
 			SetFrameUniforms(waterShader, waterModel, current_time);

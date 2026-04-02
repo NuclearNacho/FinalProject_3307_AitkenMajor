@@ -1,6 +1,6 @@
-^C:\USERS\ETHAN\ONEDRIVE\UNIVERSITY WORK\COMPUTER SCIENCE\3D COMPUTER GRAPHICS\PROJECT\FINALPROJECT_3307_AITKENMAJOR\T8\BUILD\CMAKEFILES\313B53AFEB4AE4381EF8DF9A4C1AA01B\GENERATE.STAMP.RULE
+^C:\USERS\NMAJO\DOWNLOADS\FINALPROJECT_3307_AITKENMAJOR-MASTER\FINALPROJECT_3307_AITKENMAJOR-MASTER\T8\BUILD\CMAKEFILES\713C665F87B4B1A1F77CAE161F1B11DA\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8" "-BC:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/build/Tutorial8.sln"
+C:\Users\nmajo\Downloads\cmake-4.1.1-windows-x86_64\cmake-4.1.1-windows-x86_64\bin\cmake.exe -SC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8 -BC:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/build/Tutorial8.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

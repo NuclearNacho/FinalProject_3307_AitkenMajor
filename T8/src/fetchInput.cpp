@@ -54,4 +54,24 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+	if (action == GLFW_PRESS)
+	{
+		if (key == GLFW_KEY_J)
+			enableAmbient = !enableAmbient;
+
+		if (key == GLFW_KEY_K)
+			enableDiffuse = !enableDiffuse;
+
+		if (key == GLFW_KEY_L)
+			enableSpecular = !enableSpecular;
+
+		if (key == GLFW_KEY_U)
+			enableWaterAmbient = !enableWaterAmbient;
+
+		if (key == GLFW_KEY_I)
+			enableWaterDiffuse = !enableWaterDiffuse;
+
+		if (key == GLFW_KEY_O)
+			enableWaterSpecular = !enableWaterSpecular;
+	}
 }
