@@ -35,8 +35,8 @@ set(RESOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/resource/waterShader.frag
     ${CMAKE_CURRENT_SOURCE_DIR}/resource/skybox.vert
     ${CMAKE_CURRENT_SOURCE_DIR}/resource/skybox.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/sun.frag
-    ${CMAKE_CURRENT_SOURCE_DIR}/resource/sun.vert
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shadow.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/resource/shadow.vert
 
 )
 

@@ -1,4 +1,3 @@
-#version 330
 
 in vec3 vertex;
 in vec3 color;
@@ -9,11 +8,13 @@ in vec2 uv;
 out vec3 fNormal;
 out vec3 fPos;
 out vec2 fUV;
+out vec4 fPosLightSpace;
 
 uniform float time;
 uniform mat4 projection_mat;
 uniform mat4 view_mat;
 uniform mat4 world_mat;
+uniform mat4 lightSpaceMatrix;
 
 void main(){
 
@@ -29,6 +30,9 @@ void main(){
 
 	// Pass UV to fragment shader
 	fUV = uv;
+
+	// Transform vertex into light's clip space for shadow lookup
+	fPosLightSpace = lightSpaceMatrix * world_mat * vec4(vertex, 1.0);
 
 	gl_Position = projection_mat * vtxPos;
 }

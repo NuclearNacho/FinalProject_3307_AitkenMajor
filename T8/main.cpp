@@ -1,4 +1,3 @@
-#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -15,7 +14,7 @@
 #include <iostream>
 
 // Path to shader directory
-#define DIRECTORY "C:/Users/nmajo/Downloads/FinalProject_3307_AitkenMajor-master/FinalProject_3307_AitkenMajor-master/T8/"
+#define DIRECTORY "C:/Users/ethan/OneDrive/University Work/Computer Science/3D Computer Graphics/Project/FinalProject_3307_AitkenMajor/T8/"
 
 // Macro for printing exceptions
 #define PrintException(exception_object)\
@@ -31,6 +30,10 @@ const glm::vec3 background(0.0, 0.0, 0.0);
 float camera_near_clip_distance_g = 0.01f;
 float camera_far_clip_distance_g = 1000.0f;
 float camera_fov_g = 60.0f;
+
+// Shadow map resolution
+const unsigned int SHADOW_WIDTH = 2048;
+const unsigned int SHADOW_HEIGHT = 2048;
 
 // Global matrices
 glm::mat4 view_matrix, projection_matrix;
@@ -57,10 +60,81 @@ struct SceneGeometry {
 	GLuint waterIndexCount;
 	GLuint skyboxVAO;
 	GLuint skyboxTexture;
-	GLuint sunVAO;
-	GLuint sunIndexCount;
+	GLuint trunkVAO;
+	GLuint trunkIndexCount;
+	GLuint foliageVAO;
+	GLuint foliageIndexCount;
 	GLuint grassTexture;
+	GLuint leavesTexture;
 };
+
+
+//-----------------------------------------------------------
+// Shadow map framebuffer
+//-----------------------------------------------------------
+GLuint shadowFBO;
+GLuint shadowMapTex;
+
+void InitShadowMap() {
+	glGenFramebuffers(1, &shadowFBO);
+
+	// Create depth texture
+	glGenTextures(1, &shadowMapTex);
+	glBindTexture(GL_TEXTURE_2D, shadowMapTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		SHADOW_WIDTH, SHADOW_HEIGHT, 0,
+		GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	// Fragments outside the shadow map read as "not in shadow"
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+	// Attach depth texture to FBO
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+		GL_TEXTURE_2D, shadowMapTex, 0);
+	// No color buffer needed
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		throw std::runtime_error("Shadow framebuffer is not complete!");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+//-----------------------------------------------------------
+// Compute light-space matrix for the sun's current position
+// Uses orthographic projection looking at the scene center
+//-----------------------------------------------------------
+glm::mat4 ComputeLightSpaceMatrix(float current_time) {
+	float sunSpeed = 0.5f;
+	float sunAngle = current_time * sunSpeed;
+	float sunDistance = 40.0f;
+
+	glm::vec3 sunDirWorld = glm::normalize(glm::vec3(
+		std::cos(sunAngle),
+		0.3f,
+		std::abs(std::sin(sunAngle))
+	));
+
+	glm::vec3 sunPos = sunDistance * sunDirWorld;
+	glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	glm::mat4 lightView = glm::lookAt(sunPos, target, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	// Orthographic projection large enough to cover the scene
+	float orthoSize = 50.0f;
+	glm::mat4 lightProj = glm::ortho(-orthoSize, orthoSize,
+		-orthoSize, orthoSize,
+		0.1f, 100.0f);
+
+	return lightProj * lightView;
+}
 
 
 //-----------------------------------------------
@@ -184,7 +258,7 @@ GLuint CreateBumpyPlaneVAO(float width, float height,int rows, int cols,const st
 	float range = (hmax - hmin == 0) ? 1.0f : (hmax - hmin);
 
 	// UV tiling — how many times the grass texture repeats across the terrain
-	float uvTile = 4.0f;
+	float uvTile = 1.0f;
 
 	for (int r = 0; r < rows; ++r) {
 		float v = (float)r / (rows - 1);
@@ -516,6 +590,7 @@ GLuint LoadSkyboxTexture(const std::string& wallPath,
 	return texID;
 }
 
+
 //-----------------------------------------------------------
 // Load a 2D grass texture SOIL
 //-----------------------------------------------------------
@@ -545,31 +620,216 @@ GLuint LoadTexture(const std::string& filepath) {
 
 
 //-----------------------------------------------------------
-// Create a UV sphere VAO for the sun visual
-// Generates a sphere of given radius with lat/lon subdivisions
+// Create a cylinder VAO for the tree trunk
+// Uses the same vertex format as terrain: pos + color + normal + UV
+// 11 floats per vertex (x, y, z, r, g, b, nx, ny, nz, u, v)
 //-----------------------------------------------------------
-GLuint CreateSphereVAO(float radius, int stacks, int slices, GLuint& outIndexCount) {
+GLuint CreateCylinderVAO(float radius, float height, int slices, GLuint& outIndexCount) {
 	std::vector<GLfloat> vertices;
 	std::vector<GLuint> indices;
 
-	// Generate vertices
-	for (int i = 0; i <= stacks; ++i) {
-		float phi = glm::pi<float>() * (float)i / (float)stacks;  // 0 to PI
-		for (int j = 0; j <= slices; ++j) {
-			float theta = 2.0f * glm::pi<float>() * (float)j / (float)slices;  // 0 to 2PI
+	float halfH = height * 0.5f;
 
-			float x = radius * std::sin(phi) * std::cos(theta);
-			float y = radius * std::sin(phi) * std::sin(theta);
-			float z = radius * std::cos(phi);
+	// Brown trunk color
+	float cr = 0.36f, cg = 0.20f, cb = 0.09f;
+
+	//-------------------------------------------------------
+	// Side vertices: two rings (bottom and top)
+	//-------------------------------------------------------
+	for (int ring = 0; ring <= 1; ++ring) {
+		float z = (ring == 0) ? -halfH : halfH;
+		float v = (float)ring;
+
+		for (int j = 0; j <= slices; ++j) {
+			float theta = 2.0f * glm::pi<float>() * (float)j / (float)slices;
+			float x = radius * std::cos(theta);
+			float y = radius * std::sin(theta);
 
 			// position
 			vertices.push_back(x);
 			vertices.push_back(y);
 			vertices.push_back(z);
+
+			// color (brown)
+			vertices.push_back(cr);
+			vertices.push_back(cg);
+			vertices.push_back(cb);
+
+			// normal (points outward from cylinder axis)
+			vertices.push_back(std::cos(theta));
+			vertices.push_back(std::sin(theta));
+			vertices.push_back(0.0f);
+
+			// UV
+			float u = (float)j / (float)slices;
+			vertices.push_back(u);
+			vertices.push_back(v);
 		}
 	}
 
-	// Generate indices
+	// Side indices
+	for (int j = 0; j < slices; ++j) {
+		GLuint bot = j;
+		GLuint top = j + (slices + 1);
+
+		indices.push_back(bot);
+		indices.push_back(top);
+		indices.push_back(bot + 1);
+
+		indices.push_back(top);
+		indices.push_back(top + 1);
+		indices.push_back(bot + 1);
+	}
+
+	//-------------------------------------------------------
+	// Bottom cap
+	//-------------------------------------------------------
+	GLuint botCenter = (GLuint)(vertices.size() / 11);
+	// center vertex
+	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(-halfH); // pos
+	vertices.push_back(cr);   vertices.push_back(cg);   vertices.push_back(cb);      // color
+	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(-1.0f);   // normal
+	vertices.push_back(0.5f); vertices.push_back(0.5f);                               // UV
+
+	GLuint botRingStart = (GLuint)(vertices.size() / 11);
+	for (int j = 0; j <= slices; ++j) {
+		float theta = 2.0f * glm::pi<float>() * (float)j / (float)slices;
+		float x = radius * std::cos(theta);
+		float y = radius * std::sin(theta);
+
+		vertices.push_back(x);    vertices.push_back(y);    vertices.push_back(-halfH);
+		vertices.push_back(cr);   vertices.push_back(cg);   vertices.push_back(cb);
+		vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(-1.0f);
+		vertices.push_back(0.5f + 0.5f * std::cos(theta));
+		vertices.push_back(0.5f + 0.5f * std::sin(theta));
+	}
+
+	for (int j = 0; j < slices; ++j) {
+		indices.push_back(botCenter);
+		indices.push_back(botRingStart + j + 1);
+		indices.push_back(botRingStart + j);
+	}
+
+	//-------------------------------------------------------
+	// Top cap
+	//-------------------------------------------------------
+	GLuint topCenter = (GLuint)(vertices.size() / 11);
+	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(halfH);
+	vertices.push_back(cr);   vertices.push_back(cg);   vertices.push_back(cb);
+	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(1.0f);
+	vertices.push_back(0.5f); vertices.push_back(0.5f);
+
+	GLuint topRingStart = (GLuint)(vertices.size() / 11);
+	for (int j = 0; j <= slices; ++j) {
+		float theta = 2.0f * glm::pi<float>() * (float)j / (float)slices;
+		float x = radius * std::cos(theta);
+		float y = radius * std::sin(theta);
+
+		vertices.push_back(x);    vertices.push_back(y);    vertices.push_back(halfH);
+		vertices.push_back(cr);   vertices.push_back(cg);   vertices.push_back(cb);
+		vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(1.0f);
+		vertices.push_back(0.5f + 0.5f * std::cos(theta));
+		vertices.push_back(0.5f + 0.5f * std::sin(theta));
+	}
+
+	for (int j = 0; j < slices; ++j) {
+		indices.push_back(topCenter);
+		indices.push_back(topRingStart + j);
+		indices.push_back(topRingStart + j + 1);
+	}
+
+	outIndexCount = (GLuint)indices.size();
+
+	//-------------------------------------------------------
+	// Upload to GPU — same layout as terrain (11 floats/vertex)
+	//-------------------------------------------------------
+	GLuint vao, vbo, ebo;
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER,
+		vertices.size() * sizeof(GLfloat),
+		vertices.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+		indices.size() * sizeof(GLuint),
+		indices.data(), GL_STATIC_DRAW);
+
+	// position (location 0)
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)0);
+
+	// color (location 1)
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	// normal (location 2)
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+
+	// UV (location 3)
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(9 * sizeof(GLfloat)));
+
+	glBindVertexArray(0);
+	return vao;
+}
+
+
+//-----------------------------------------------------------
+// Create a UV sphere VAO for tree foliage
+// Uses the same vertex format as terrain: pos + color + normal + UV
+// 11 floats per vertex (x, y, z, r, g, b, nx, ny, nz, u, v)
+//-----------------------------------------------------------
+GLuint CreateSphereVAO(float radius, int stacks, int slices,
+	float cr, float cg, float cb, GLuint& outIndexCount)
+{
+	std::vector<GLfloat> vertices;
+	std::vector<GLuint> indices;
+
+	for (int i = 0; i <= stacks; ++i) {
+		float phi = glm::pi<float>() * (float)i / (float)stacks;
+		float v = (float)i / (float)stacks;
+
+		for (int j = 0; j <= slices; ++j) {
+			float theta = 2.0f * glm::pi<float>() * (float)j / (float)slices;
+			float u = (float)j / (float)slices;
+
+			float x = radius * std::sin(phi) * std::cos(theta);
+			float y = radius * std::sin(phi) * std::sin(theta);
+			float z = radius * std::cos(phi);
+
+			// normal (unit sphere direction)
+			float nx = std::sin(phi) * std::cos(theta);
+			float ny = std::sin(phi) * std::sin(theta);
+			float nz = std::cos(phi);
+
+			// position
+			vertices.push_back(x);
+			vertices.push_back(y);
+			vertices.push_back(z);
+
+			// color
+			vertices.push_back(cr);
+			vertices.push_back(cg);
+			vertices.push_back(cb);
+
+			// normal
+			vertices.push_back(nx);
+			vertices.push_back(ny);
+			vertices.push_back(nz);
+
+			// UV
+			vertices.push_back(u);
+			vertices.push_back(v);
+		}
+	}
+
 	for (int i = 0; i < stacks; ++i) {
 		for (int j = 0; j < slices; ++j) {
 			GLuint first = i * (slices + 1) + j;
@@ -604,9 +864,21 @@ GLuint CreateSphereVAO(float radius, int stacks, int slices, GLuint& outIndexCou
 		indices.size() * sizeof(GLuint),
 		indices.data(), GL_STATIC_DRAW);
 
-	// position only (location 0)
+	// position (location 0)
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)0);
+
+	// color (location 1)
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	// normal (location 2)
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+
+	// UV (location 3)
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(GLfloat), (void*)(9 * sizeof(GLfloat)));
 
 	glBindVertexArray(0);
 	return vao;
@@ -666,7 +938,7 @@ void GenerateTerrainHeights(
 
 
 //-----------------------------------------------------------
-// Create all scene geometry (terrain + water + skybox)
+// Create all scene geometry (terrain + water + skybox + trunk + foliage)
 // Generates the heightmap, builds the terrain mesh,
 // creates the water plane, and loads the skybox cubemap
 //-----------------------------------------------------------
@@ -700,10 +972,15 @@ SceneGeometry CreateSceneGeometry() {
 		assetsDir + "skysky.png"     // bottom face (was skyfloor — swapped)
 	);
 
-	// Sun sphere
-	geo.sunVAO = CreateSphereVAO(5.0f, 20, 20, geo.sunIndexCount);
-	// Grass texture for terrain
-	geo.grassTexture = LoadTexture(std::string(DIRECTORY) + "assets/grass.jpg");
+	// Tree trunk cylinder (radius 1.6, height 24, 20 slices)
+	geo.trunkVAO = CreateCylinderVAO(1.6f, 24.0f, 20, geo.trunkIndexCount);
+
+	// Tree foliage sphere (green, radius 6, sits on top of trunk)
+	geo.foliageVAO = CreateSphereVAO(6.0f, 20, 20, 0.1f, 0.6f, 0.1f, geo.foliageIndexCount);
+
+	// Textures
+	geo.grassTexture = LoadTexture(std::string(DIRECTORY) + "assets/sandgrass.png");
+	geo.leavesTexture = LoadTexture(std::string(DIRECTORY) + "assets/leaves.png");
 	return geo;
 }
 
@@ -840,10 +1117,13 @@ int main(void) {
 		GLuint myShader = LoadShaders("shaderPhong");
 		GLuint waterShader = LoadShaders("waterShader");
 		GLuint skyboxShader = LoadShaders("skybox");
-		GLuint sunShader = LoadShaders("sun");
+		GLuint shadowShader = LoadShaders("shadow");
 
 		// Create all scene geometry
 		SceneGeometry scene = CreateSceneGeometry();
+
+		// Initialize shadow map FBO
+		InitShadowMap();
 
 		// Main loop
 		float last_time = (float)glfwGetTime();
@@ -854,23 +1134,72 @@ int main(void) {
 
 			ProcessInput(window, camera, delta);
 
+			view_matrix = camera->GetViewMatrix(NULL);
+			projection_matrix = camera->GetProjectionMatrix(NULL);
+
+			// Compute light-space matrix for this frame
+			glm::mat4 lightSpaceMatrix = ComputeLightSpaceMatrix(current_time);
+			//===========================================================
+			// PASS 1: Render scene depth from the sun's point of view
+			//===========================================================
+			glUseProgram(shadowShader);
+			GLint locShadowLSM = glGetUniformLocation(shadowShader, "lightSpaceMatrix");
+			if (locShadowLSM != -1) glUniformMatrix4fv(locShadowLSM, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, shadowFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			// Shadow pass: terrain
+			GLint locShadowWorld = glGetUniformLocation(shadowShader, "world_mat");
+			glm::mat4 model = glm::mat4(1.0f);
+			if (locShadowWorld != -1) glUniformMatrix4fv(locShadowWorld, 1, GL_FALSE, glm::value_ptr(model));
+
+			glBindVertexArray(scene.terrainVAO);
+			glDrawElements(GL_TRIANGLES, scene.terrainIndexCount, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			// Shadow pass: trunk
+			glm::mat4 trunkModel = glm::translate(glm::mat4(1.0f), glm::vec3(12.5f, 12.5f, 0.0f));
+			if (locShadowWorld != -1) glUniformMatrix4fv(locShadowWorld, 1, GL_FALSE, glm::value_ptr(trunkModel));
+
+			glBindVertexArray(scene.trunkVAO);
+			glDrawElements(GL_TRIANGLES, scene.trunkIndexCount, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			// Shadow pass: foliage
+			glm::mat4 foliageModel = glm::translate(glm::mat4(1.0f), glm::vec3(12.5f, 12.5f, 12.0f));
+			if (locShadowWorld != -1) glUniformMatrix4fv(locShadowWorld, 1, GL_FALSE, glm::value_ptr(foliageModel));
+
+			glBindVertexArray(scene.foliageVAO);
+			glDrawElements(GL_TRIANGLES, scene.foliageIndexCount, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glUseProgram(0);
+
+			//===========================================================
+			// PASS 2: Render scene normally from the camera
+			//===========================================================
+			glViewport(0, 0, window_width_g, window_height_g);
+			// Handle window resizing
+			int fbW, fbH;
+			glfwGetFramebufferSize(window, &fbW, &fbH);
+			glViewport(0, 0, fbW, fbH);
+
 			glClearColor(background.r, background.g, background.b, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			view_matrix = camera->GetViewMatrix(NULL);
-			projection_matrix = camera->GetProjectionMatrix(NULL);
 			// ---- Draw skybox (drawn first, behind everything) ----
-			glDepthFunc(GL_LEQUAL);   // allow fragments at max depth (z = 1.0)
-			glDepthMask(GL_FALSE);    // disable depth writing so skybox stays behind
+			glDepthFunc(GL_LEQUAL);
+			glDepthMask(GL_FALSE);
 			glUseProgram(skyboxShader);
 
-			// Pass view + projection to skybox shader
 			GLint locSkyView = glGetUniformLocation(skyboxShader, "view_mat");
 			if (locSkyView != -1) glUniformMatrix4fv(locSkyView, 1, GL_FALSE, glm::value_ptr(view_matrix));
 			GLint locSkyProj = glGetUniformLocation(skyboxShader, "projection_mat");
 			if (locSkyProj != -1) glUniformMatrix4fv(locSkyProj, 1, GL_FALSE, glm::value_ptr(projection_matrix));
 
-			// Bind cubemap texture
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, scene.skyboxTexture);
 			GLint locSkyTex = glGetUniformLocation(skyboxShader, "skyboxTex");
@@ -881,41 +1210,12 @@ int main(void) {
 			glBindVertexArray(0);
 
 			glUseProgram(0);
-			glDepthMask(GL_TRUE);     // re-enable depth writing
-			glDepthFunc(GL_LESS);     // restore default depth function
+			glDepthMask(GL_TRUE);
+			glDepthFunc(GL_LESS);
 
-			// ---- Draw sun sphere (follows light source position) ----
-			glUseProgram(sunShader);
-
-			// Compute sun world position — same formula as SetFrameUniforms
-			float sunSpeed = 0.5f;
-			float sunAngle = current_time * sunSpeed;
-			float sunDistance = 40.0f;  // how far from origin the sun orbits
-
-			glm::vec3 sunPos = sunDistance * glm::normalize(glm::vec3(
-				std::cos(sunAngle),
-				0.3f,
-				std::abs(std::sin(sunAngle))
-			));
-
-			// Translate + scale the sphere to the sun's position
-			glm::mat4 sunModel = glm::translate(glm::mat4(1.0f), sunPos);
-
-			GLint locSunWorld = glGetUniformLocation(sunShader, "world_mat");
-			if (locSunWorld != -1) glUniformMatrix4fv(locSunWorld, 1, GL_FALSE, glm::value_ptr(sunModel));
-			GLint locSunView = glGetUniformLocation(sunShader, "view_mat");
-			if (locSunView != -1) glUniformMatrix4fv(locSunView, 1, GL_FALSE, glm::value_ptr(view_matrix));
-			GLint locSunProj = glGetUniformLocation(sunShader, "projection_mat");
-			if (locSunProj != -1) glUniformMatrix4fv(locSunProj, 1, GL_FALSE, glm::value_ptr(projection_matrix));
-
-			glBindVertexArray(scene.sunVAO);
-			glDrawElements(GL_TRIANGLES, scene.sunIndexCount, GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-
-			// ---- Draw terrain (opaque) ----
+			// ---- Draw terrain (opaque, with shadows) ----
 			glUseProgram(myShader);
 
-			// Lighting toggle implementation for terrain shader
 			GLint locA = glGetUniformLocation(myShader, "coefA");
 			GLint locD = glGetUniformLocation(myShader, "coefD");
 			GLint locS = glGetUniformLocation(myShader, "coefS");
@@ -924,16 +1224,26 @@ int main(void) {
 			if (locD != -1) glUniform1f(locD, enableDiffuse * 2.0f);
 			if (locS != -1) glUniform1f(locS, enableSpecular * 0.6f);
 
-			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::mat4(1.0f);
 			SetFrameUniforms(myShader, model, current_time);
 
-			// Bind grass texture
+			// Upload light-space matrix for shadow lookup
+			GLint locLSM = glGetUniformLocation(myShader, "lightSpaceMatrix");
+			if (locLSM != -1) glUniformMatrix4fv(locLSM, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+			// Bind grass texture on unit 0
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, scene.grassTexture);
 			GLint locGrassTex = glGetUniformLocation(myShader, "grassTex");
 			if (locGrassTex != -1) glUniform1i(locGrassTex, 0);
 			GLint locUseTex = glGetUniformLocation(myShader, "useTexture");
-			if (locUseTex != -1) glUniform1i(locUseTex, 1);  // enable texture
+			if (locUseTex != -1) glUniform1i(locUseTex, 1);
+
+			// Bind shadow map on unit 1
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, shadowMapTex);
+			GLint locShadowMap = glGetUniformLocation(myShader, "shadowMap");
+			if (locShadowMap != -1) glUniform1i(locShadowMap, 1);
 
 			GLint locShapeColor = glGetUniformLocation(myShader, "shape_color");
 			if (locShapeColor != -1) glUniform3f(locShapeColor, 0.5f, 1.0f, 0.2f);
@@ -942,7 +1252,49 @@ int main(void) {
 			glDrawElements(GL_TRIANGLES, scene.terrainIndexCount, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 
-			glBindTexture(GL_TEXTURE_2D, 0);  // unbind texture
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			// ---- Draw tree trunk (with shadows) ----
+			trunkModel = glm::translate(glm::mat4(1.0f), glm::vec3(12.5f, 12.5f, 0.0f));
+			SetFrameUniforms(myShader, trunkModel, current_time);
+
+			if (locLSM != -1) glUniformMatrix4fv(locLSM, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+			if (locUseTex != -1) glUniform1i(locUseTex, 0);
+			if (locShapeColor != -1) glUniform3f(locShapeColor, 0.36f, 0.20f, 0.09f);
+
+			// Bind shadow map on unit 1 for trunk too
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, shadowMapTex);
+			if (locShadowMap != -1) glUniform1i(locShadowMap, 1);
+
+			glBindVertexArray(scene.trunkVAO);
+			glDrawElements(GL_TRIANGLES, scene.trunkIndexCount, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			// ---- Draw tree foliage (with shadows + leaves texture) ----
+			foliageModel = glm::translate(glm::mat4(1.0f), glm::vec3(12.5f, 12.5f, 12.0f));
+			SetFrameUniforms(myShader, foliageModel, current_time);
+
+			if (locLSM != -1) glUniformMatrix4fv(locLSM, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+			// Bind leaves texture on unit 0
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, scene.leavesTexture);
+			if (locGrassTex != -1) glUniform1i(locGrassTex, 0);  // reuses grassTex sampler
+			if (locUseTex != -1) glUniform1i(locUseTex, 1);      // enable texture
+			if (locShapeColor != -1) glUniform3f(locShapeColor, 0.1f, 0.6f, 0.1f);
+
+			glBindVertexArray(scene.foliageVAO);
+			glDrawElements(GL_TRIANGLES, scene.foliageIndexCount, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glActiveTexture(GL_TEXTURE0);
+
 			glUseProgram(0);
 
 			// ---- Draw water (transparent, drawn after terrain) ----
@@ -951,7 +1303,6 @@ int main(void) {
 
 			glUseProgram(waterShader);
 
-			// Lighting toggle implementation for water shader
 			GLint locWaterA = glGetUniformLocation(waterShader, "coefA");
 			GLint locWaterD = glGetUniformLocation(waterShader, "coefD");
 			GLint locWaterS = glGetUniformLocation(waterShader, "coefS");
